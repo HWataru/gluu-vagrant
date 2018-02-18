@@ -58,7 +58,8 @@ Vagrant.configure("2") do |config|
     cp -p /vagrant/tmp/setup.properties /opt/gluu-server-$version/install/community-edition-setup/
     /sbin/gluu-serverd-$version enable
     /sbin/gluu-serverd-$version start
+    /sbin/gluu-serverd-$version login
     cd /install/community-edition-setup
-    ./setup.py -cas -e -n -f ./setup.properties
+    -e -n -f ./setup.properties
   SHELL
 end
