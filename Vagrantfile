@@ -45,8 +45,8 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", env: {"version" => conf["version"], "hostname" => conf["prop"]["hostname"], "ip" => conf["prop"]["ip"]} , inline: <<-SHELL
     hostnamectl set-hostname $hostname
     systemctl restart network.service
+    cp -p /vagrant/tmp/setup.properties /opt/gluu-server-$version/install/community-edition-setup/
     /sbin/gluu-serverd-$version enable
     /sbin/gluu-serverd-$version start
-    /sbin/gluu-serverd-$version login
   SHELL
 end
