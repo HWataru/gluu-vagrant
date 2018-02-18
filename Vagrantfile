@@ -21,16 +21,17 @@ Vagrant.configure("2") do |config|
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
-
+  
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "centos/7"
-
+  config.vm.box = "82p/gluu"
+  
   config.vm.network "private_network", ip: conf["prop"]["ip"], virtualbox__intnet: "private"
-  config.vm.network :forwarded_port, guest: 22, host: 10022, id:"ssh"
+  config.vm.network :forwarded_port, guest: 22, host: 1022, id:"ssh"
   config.vm.network :forwarded_port, guest: 443, host: 443  
+  config.vm.network :forwarded_port, guest: 80, host: 80
   config.vm.synced_folder ".", "/vagrant",type:"virtualbox"
-
+  
   if Vagrant.has_plugin?("vagrant-proxyconf") && ENV['http_proxy']
     config.proxy.http = ENV['http_proxy']
     config.proxy.https = ENV['https_proxy'] ? ENV['https_proxy'] : ENV['http_proxy']
@@ -42,24 +43,10 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provision "shell", env: {"version" => conf["version"], "hostname" => conf["prop"]["hostname"], "ip" => conf["prop"]["ip"]} , inline: <<-SHELL
-    echo "vagrant soft nofile 65536" >> /etc/security/limits.conf
-    echo "vagrant hard nofile 131072" >> /etc/security/limits.conf
-    echo "65535" > /proc/sys/fs/file-max** 
-    sysctl -p 
     hostnamectl set-hostname $hostname
     systemctl restart network.service
-    yum -y install wget
-    echo "session    required     pam_limits.so" >> /etc/pam.d/login
-    wget https://repo.gluu.org/centos/Gluu-centos7.repo -O /etc/yum.repos.d/Gluu.repo
-    wget https://repo.gluu.org/centos/RPM-GPG-KEY-GLUU -O /etc/pki/rpm-gpg/RPM-GPG-KEY-GLUU
-    rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-GLUU
-    yum clean all
-    yum install -y gluu-server-$version
-    cp -p /vagrant/tmp/setup.properties /opt/gluu-server-$version/install/community-edition-setup/
     /sbin/gluu-serverd-$version enable
     /sbin/gluu-serverd-$version start
     /sbin/gluu-serverd-$version login
-    cd /install/community-edition-setup
-    -e -n -f ./setup.properties
   SHELL
 end
