@@ -39,11 +39,13 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provider "virtualbox" do |vm|
-    vm.memory = 2048
+    vm.customize ["modifyvm", :id, "--memory", "4096", "--cpus", "2", "--ioapic", "on"]
   end
 
   config.vm.provision "shell", env: {"version" => conf["version"], "hostname" => conf["prop"]["hostname"], "ip" => conf["prop"]["ip"]} , inline: <<-SHELL
     hostnamectl set-hostname $hostname
+    yum install -y net-tools
+    echo "127.0.0.1   sso.demo.yubion.com" >> /etc/hosts 
     systemctl restart network.service
     cp -p /vagrant/tmp/setup.properties /opt/gluu-server-$version/install/community-edition-setup/
     /sbin/gluu-serverd-$version enable
