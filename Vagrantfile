@@ -26,8 +26,5 @@ Vagrant.configure("2") do |config|
     rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-GLUU
     yum clean all
     yum install -y gluu-server-$version
-    cp -p /vagrant/tmp/setup.properties /opt/gluu-server-$version/install/community-edition-setup/
-    /sbin/gluu-serverd-$version enable
-    /sbin/gluu-serverd-$version start
   SHELL
 end
