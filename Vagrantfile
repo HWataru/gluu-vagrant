@@ -1,6 +1,15 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 gluu_version="3.1.2"
+
+## make properies file
+props = ['# Gluu properties file']
+conf['prop'].each do |v|
+    props << v[0] + "=" + v[1].to_s
+end
+File.open("tmp/setup.properties", mode = "w"){|f|
+    f.write(props.join("\n"))
+}
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
