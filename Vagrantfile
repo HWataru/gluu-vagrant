@@ -30,7 +30,8 @@ Vagrant.configure("2") do |config|
     vb.customize ["modifyvm", :id, "--memory", "4096", "--cpus", "2", "--ioapic", "on"]
   end
 
-  config.vm.provision "shell", env: {"version" => conf["version"], "hostname" => conf["prop"]["hostname"], "ip" => conf["prop"]["ip"]} , inline: <<-SHELL    echo "vagrant soft nofile 65536" >> /etc/security/limits.conf
+  config.vm.provision "shell", env: {"version" => conf["version"], "hostname" => conf["prop"]["hostname"], "ip" => conf["prop"]["ip"]} , inline: <<-SHELL
+    echo "vagrant soft nofile 65536" >> /etc/security/limits.conf
     echo "vagrant hard nofile 131072" >> /etc/security/limits.conf
     echo "65535" > /proc/sys/fs/file-max** 
     echo "127.0.0.1   $hostname" >> /etc/hosts 
