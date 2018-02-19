@@ -32,7 +32,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "shell", env: {"version" => conf["version"], "hostname" => conf["prop"]["hostname"], "ip" => conf["prop"]["ip"]} , inline: <<-SHELL
     echo "* soft nofile 65536" >> /etc/security/limits.conf
-    echo "* hard nofile 131072" >> /etc/security/limits.conf
+    echo "* hard nofile 261144" >> /etc/security/limits.conf
     echo "65535" > /proc/sys/fs/file-max** 
     echo "127.0.0.1   $hostname" >> /etc/hosts 
     hostnamectl set-hostname $hostname
