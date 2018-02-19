@@ -2,6 +2,9 @@
 # vi: set ft=ruby :
 gluu_version="3.1.2"
 
+# load config.yaml
+conf = YAML::load(File.read("#{File.dirname(__FILE__)}/config.yaml"))
+
 ## make properies file
 props = ['# Gluu properties file']
 conf['prop'].each do |v|
