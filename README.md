@@ -13,22 +13,7 @@ $ sudo /sbin/gluu-serverd-3.1.2 login
 
 see base branch.
 
-## TODO
-
-gluu setup.py `-cas` options doesn't work with default properties.
-
-```sh
-# ./setup.py -cas -e -n -f ./setup.properties
-```
-
-If you want install install CAS, Shibboleth SAML IDP and Asimba SAML Proxy, you should setup manually.
-
-```sh
-> vagrant ssh
-$ sudo /sbin/gluu-serverd-3.1.2 login
-# cd /install/community-edition-setup/
-# ./setup.py
-```
+## MEMO
 
 ```sh
 Install oxAuth OAuth2 Authorization Server? [Yes] :
@@ -41,4 +26,12 @@ Install Asimba SAML Proxy? [No] : y
 Install oxAuth RP? [No] : y
 Install Passport? [No] : y
 Install JCE 1.8? [Yes] : y
+```
+
+<https://support.gluu.org/installation/4037/identity-oxtrust-returns-503-service-unavailable-response/>
+<https://support.gluu.org/installation/3971/gluu-server-503-error/>
+
+```sh
+# netstat -antlp | grep 1636 | grep LISTEN
+# ps -ef | grep slapd
 ```
