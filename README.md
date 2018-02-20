@@ -1,5 +1,10 @@
 # Gluu server
 
+```sh
+> vagrant plugin install vagrant-reload
+> vagrant up
+```
+
 Edit `config.yaml` and finish installatioin of Gluu Server
 
 ```sh
