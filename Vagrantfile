@@ -1,7 +1,5 @@
 # -*- mode: ruby -*-
-# vi: set ft=ruby :
-require './vagrant-provision-reboot-plugin' 
-
+# vi: set ft=ruby :vagrant plugin install vagrant-reload
 gluu_version="3.1.2"
 
 # load config.yaml
@@ -37,7 +35,7 @@ Vagrant.configure("2") do |config|
   # common settings
   config.vm.provision "shell", env: gluuEnv, :path => "./provision/common_setup.sh", :privileged => true
   # reboot vm
-  config.vm.provision :unix_reboot
+  config.vm.provision :reload
   # install Gluu server
   config.vm.provision "shell", env: gluuEnv, :path => "./provision/gluu_ubuntu16.sh", :privileged => true
   # setup.properties
