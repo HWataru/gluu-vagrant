@@ -24,29 +24,19 @@ Vagrant.configure("2") do |config|
   
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "centos/7"
+  config.vm.box = "bento/ubuntu-16.04"
   
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--memory", "4096", "--cpus", "2", "--ioapic", "on"]
   end
 
-  config.vm.provision "shell", env: {"version" => conf["version"], "hostname" => conf["prop"]["hostname"], "ip" => conf["prop"]["ip"]} , inline: <<-SHELL
-    echo "* soft nofile 65536" >> /etc/security/limits.conf
-    echo "* hard nofile 261144" >> /etc/security/limits.conf
-    echo "65535" > /proc/sys/fs/file-max** 
-    echo "127.0.0.1   $hostname" >> /etc/hosts 
-    hostnamectl set-hostname $hostname
-    sysctl -p 
-    yum -y install -y wget net-tools
-    echo "session    required     pam_limits.so" >> /etc/pam.d/login
-    wget https://repo.gluu.org/centos/Gluu-centos7.repo -O /etc/yum.repos.d/Gluu.repo
-    wget https://repo.gluu.org/centos/RPM-GPG-KEY-GLUU -O /etc/pki/rpm-gpg/RPM-GPG-KEY-GLUU
-    rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-GLUU
-    yum clean all
-    yum install -y gluu-server-$version
-    systemctl restart network.service
-    cp -p /vagrant/tmp/setup.properties /opt/gluu-server-$version/install/community-edition-setup/
-    /sbin/gluu-serverd-$version enable
-    /sbin/gluu-serverd-$version start
-  SHELL
+  gluuEnv = {"version" => conf["version"], "hostname" => conf["prop"]["hostname"], "ip" => conf["prop"]["ip"]}
+
+  # common settings
+  config.vm.provision "shell", env: gluuEnv, :path => "./provision/common_setup.sh", :privileged => true
+  # install Gluu server
+  config.vm.provision "shell", env: gluuEnv, :path => "./provision/gluu_ubuntu16.sh", :privileged => true
+  # setup.properties
+  config.vm.provision "shell", env: gluuEnv, :privileged => true,
+    inline: "cp -p /vagrant/tmp/setup.properties /opt/gluu-server-$version/install/community-edition-setup/"
 end
