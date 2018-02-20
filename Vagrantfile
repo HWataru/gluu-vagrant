@@ -1,6 +1,5 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :vagrant plugin install vagrant-reload
-gluu_version="3.1.2"
 
 # load config.yaml
 conf = YAML::load(File.read("#{File.dirname(__FILE__)}/config.yaml"))
@@ -10,6 +9,7 @@ props = ['# Gluu properties file']
 conf['prop'].each do |v|
     props << v[0] + "=" + v[1].to_s
 end
+
 File.open("tmp/setup.properties", mode = "w"){|f|
     f.write(props.join("\n"))
 }
@@ -31,6 +31,12 @@ Vagrant.configure("2") do |config|
   end
 
   gluuEnv = {"version" => conf["version"], "hostname" => conf["prop"]["hostname"], "ip" => conf["prop"]["ip"]}
+
+  config.vm.network "private_network", ip: gluuEnv["ip"], virtualbox__intnet: "private"
+  config.vm.network :forwarded_port, guest: 22, host: 1022, id:"ssh"
+  config.vm.network :forwarded_port, guest: 443, host: 443  
+  config.vm.network :forwarded_port, guest: 80, host: 80
+
 
   # common settings
   config.vm.provision "shell", env: gluuEnv, :path => "./provision/common_setup.sh", :privileged => true
