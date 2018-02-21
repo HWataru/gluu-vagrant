@@ -1,6 +1,6 @@
 # Environment properties
 # Gluu version
-version: 3.1.2
+version: 3.1.1
 
 # for generate Gluu properties file
 prop:
@@ -12,7 +12,7 @@ prop:
   city: shibuya
   state: tokyo
   admin_email: haniyama_wataru@sgk.jp
-  application_max_ram: 2048
+  application_max_ram: 3072
   ## Do NOT modify below this part unless you know what you're doing
   jksPass: vagrant
   ### The cn=Directory Manager's password in ldap
