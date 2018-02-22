@@ -24,7 +24,7 @@ Vagrant.configure("2") do |config|
   
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "bento/ubuntu-16.04"
+  config.vm.box = "centos/7"
   
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--memory", "4096", "--cpus", "2", "--ioapic", "on"]
@@ -40,11 +40,14 @@ Vagrant.configure("2") do |config|
 
   # common settings
   config.vm.provision "shell", env: gluuEnv, :path => "./provision/common_setup.sh", :privileged => true
-  # reboot vm
-  config.vm.provision :reload
   # install Gluu server
-  config.vm.provision "shell", env: gluuEnv, :path => "./provision/gluu_ubuntu16.sh", :privileged => true
-  # setup.properties
-  config.vm.provision "shell", env: gluuEnv, :privileged => true,
-    inline: "cp -p /vagrant/tmp/setup.properties /opt/gluu-server-$version/install/community-edition-setup/"
+  if config.vm.box.include?("bento/ubuntu-16.04")
+    config.vm.provision "shell", env: gluuEnv, :path => "./provision/gluu_ubuntu16.sh", :privileged => true
+  elsif config.vm.box.include?("centos/7")
+    config.vm.provision "shell", env: gluuEnv, :path => "./provision/gluu_centos7.sh", :privileged => true
+  else
+    raise "not supported image... This Vagrantfile support centos/7 and bento/ubuntu-16.04"
+  end
+  # setup Gluu Server
+  config.vm.provision "shell", env: gluuEnv, :path => "./provision/setup_gluu.sh", :privileged => true
 end
