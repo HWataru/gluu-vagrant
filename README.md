@@ -6,6 +6,8 @@ Setup Gluu server for centos/7 and Ubuntu-16.04. [I can not set up with Ansible]
 
 Edit `config.yaml` for your environment.
 
+add hostname to your hosts file.
+
 ```sh
 > vagrant up
 ```
