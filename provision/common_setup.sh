@@ -9,4 +9,4 @@ echo "65535" > /proc/sys/fs/file-max**
 echo "session    required     pam_limits.so" >> /etc/pam.d/login
 echo "127.0.0.1   $hosextname" >> /etc/hosts 
 hostnamectl set-hostname $hostname
-
+sysctl -p
