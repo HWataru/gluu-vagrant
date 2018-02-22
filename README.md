@@ -1,14 +1,16 @@
 # Gluu server
 
-Setup Gluu server centos/7 and Ubuntu-16.04. [I can not set up with Ansible](https://github.com/dotariel/gluu-vagrant), so I make simple shell scripts.
+Setup Gluu server for centos/7 and Ubuntu-16.04. [I can not set up with Ansible](https://github.com/dotariel/gluu-vagrant), so I make simple shell scripts.
 
 ## Quick Start
 
-Edit `config.yaml` for your environment
+Edit `config.yaml` for your environment.
 
 ```sh
 > vagrant up
 ```
+
+if you want to install Asimba Saml Proxy, oxAuth RP or Passport, add options to setup.py command in [setup_gluu.sh](./provision/setup_gluu.sh).
 
 ## MEMO
 
