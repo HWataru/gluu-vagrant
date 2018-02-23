@@ -26,9 +26,9 @@ Vagrant.configure("2") do |config|
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = "centos/7"
   
-  config.vm.provider :virtualbox do |vb|
-    vb.customize ["modifyvm", :id, "--memory", "4096", "--cpus", "2", "--ioapic", "on"]
-  end
+  # config.vm.provider :virtualbox do |vb|
+  #   vb.customize ["modifyvm", :id, "--memory", "4096", "--cpus", "2", "--ioapic", "on"]
+  # end
 
   gluuEnv = {"version" => conf["version"], "hostname" => conf["prop"]["hostname"], "ip" => conf["prop"]["ip"]}
 
@@ -49,5 +49,5 @@ Vagrant.configure("2") do |config|
     raise "not supported image... This Vagrantfile support centos/7 and bento/ubuntu-16.04"
   end
   # setup Gluu Server
-  config.vm.provision "shell", env: gluuEnv, :path => "./provision/setup_gluu.sh", :privileged => true
+  # config.vm.provision "shell", env: gluuEnv, :path => "./provision/setup_gluu.sh", :privileged => true
 end
